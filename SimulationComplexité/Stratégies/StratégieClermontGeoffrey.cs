@@ -11,9 +11,9 @@ namespace SimulationComplexité.Stratégies
             // BON COURAGE
             if (complexitéAccidentelleActuelle > valeurProduiteBrute) {
                 return 0;
-            } 
+            }
 
-            if (iterations % 2 == 0 ) {
+            if (iterations % 10 == 0 ) {
                 iterations++;
                 return valeurProduiteBrute / 2;
             }
