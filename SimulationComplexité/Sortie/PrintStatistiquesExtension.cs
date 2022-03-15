@@ -18,7 +18,7 @@ namespace SimulationComplexité.Sortie
 
                 statistiquesStratégie.Print();
 
-                if (stratégie is VotreStratégie) stratégieCustomClassée = true;
+                if (stratégie is StratégieClermontGeoffrey) stratégieCustomClassée = true;
             }
 
             Console.WriteLine(
