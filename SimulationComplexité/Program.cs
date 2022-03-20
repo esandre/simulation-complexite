@@ -1,4 +1,5 @@
 ﻿using SimulationComplexité.Simulation;
+using SimulationComplexité.Simulation.Stratégie;
 using SimulationComplexité.Sortie;
 using SimulationComplexité.Stratégies;
 using SimulationComplexité.Stratégies.Prédéfinies;

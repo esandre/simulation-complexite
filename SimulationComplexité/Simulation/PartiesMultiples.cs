@@ -1,6 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using System.Collections.Immutable;
 using SimulationComplexité.Notation;
+using SimulationComplexité.Simulation.Stratégie;
 using SimulationComplexité.Sortie;
 
 namespace SimulationComplexité.Simulation
@@ -11,7 +12,10 @@ namespace SimulationComplexité.Simulation
         private readonly ParamètresPartie _paramètresGénéraux;
         private readonly IImmutableDictionary<IStratégieQualité, ConcurrentBag<RésultatPartie>> _historiqueParties;
 
-        public PartiesMultiples(ISortiePartie sortie, ParamètresPartie paramètresGénéraux, IEnumerable<IStratégieQualité> stratégies)
+        public PartiesMultiples(
+            ISortiePartie sortie, 
+            ParamètresPartie paramètresGénéraux, 
+            IEnumerable<IStratégieQualité> stratégies)
         {
             _sortie = sortie;
             _paramètresGénéraux = paramètresGénéraux;
@@ -26,8 +30,9 @@ namespace SimulationComplexité.Simulation
                     Parallel.For(0, nombreParties,
                         _ =>
                         {
+                            var stratégie = stratégieQualité.Fork();
                             var partie = new Partie(_sortie, new Dés6Faces(), _paramètresGénéraux,
-                                stratégieQualité);
+                                stratégie);
                             _historiqueParties[stratégieQualité].Add(partie.Jouer());
                         });
                 });

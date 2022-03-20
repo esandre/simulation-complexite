@@ -1,4 +1,4 @@
-﻿using SimulationComplexité.Simulation;
+﻿using SimulationComplexité.Simulation.Stratégie;
 
 namespace SimulationComplexité.Notation
 {
@@ -21,6 +21,7 @@ namespace SimulationComplexité.Notation
         }
 
         private const double ToléranceValeurMoyenne = 0.05;
+        private const double ToléranceScoreMoyen = 0.05;
 
         public IStratégieQualité Stratégie { get; }
         private ushort NombreItérationsMoyen { get; }
@@ -33,7 +34,12 @@ namespace SimulationComplexité.Notation
             if (other is null) return 1;
 
             if (ValeurMoyenne != other.ValeurMoyenne)
-                return SubstractUint(ValeurMoyenne, other.ValeurMoyenne);
+            {
+                var différenceValeur = SubstractUint(ValeurMoyenne, other.ValeurMoyenne);
+
+                var moyenne = ((double) ValeurMoyenne + other.ValeurMoyenne) / 2;
+                if (Math.Abs(différenceValeur / moyenne) > ToléranceScoreMoyen) return différenceValeur;
+            }
 
             var valeurMoyenneParItération = (double) ValeurMoyenne / NombreItérationsMoyen;
             var valeurMoyenneParItérationOther = (double) other.ValeurMoyenne / other.NombreItérationsMoyen;
@@ -50,9 +56,9 @@ namespace SimulationComplexité.Notation
         public void Print()
         {
             Console.WriteLine(
-                $"Sur {_nombreParties} parties la stratégie {Stratégie} a donné un score moyen de {ValeurMoyenne}, " +
+                $"Sur {_nombreParties} parties la stratégie {Stratégie} a donné un score moyen de {ValeurMoyenne}(+/- {ToléranceScoreMoyen:P}), " +
                 $"une complexité moyenne de {ComplexitéMoyenne} sur {NombreItérationsMoyen} itérations en moyenne " +
-                $"soit {(double)ValeurMoyenne / NombreItérationsMoyen:F} valeur/itération.");
+                $"soit {(double)ValeurMoyenne / NombreItérationsMoyen:F}(+/- {ToléranceValeurMoyenne:P}) valeur/itération.");
 
             Console.WriteLine();
         }

@@ -1,11 +1,12 @@
 ﻿using SimulationComplexité.Notation;
+using SimulationComplexité.Simulation.Stratégie;
 
 namespace SimulationComplexité.Stratégies.Prédéfinies
 {
-    internal class StratégiePrudente : IStratégieÉtalon
+    internal class StratégiePrudente : StratégieStateless, IStratégieÉtalon
     {
         /// <inheritdoc />
-        public uint MontantInvestiEnQualité(
+        public override uint MontantInvestiEnQualité(
             uint valeurProduiteBrute,
             uint complexitéAccidentelleActuelle,
             uint scoreProduitActuel,
