@@ -38,7 +38,7 @@ namespace SimulationComplexité.Notation
                 var différenceValeur = SubstractUint(ValeurMoyenne, other.ValeurMoyenne);
 
                 var moyenne = ((double) ValeurMoyenne + other.ValeurMoyenne) / 2;
-                if (Math.Abs(différenceValeur / moyenne) > ToléranceScoreMoyen) return différenceValeur;
+                if (Math.Abs(différenceValeur / moyenne) > ToléranceScoreMoyen / 2) return différenceValeur;
             }
 
             var valeurMoyenneParItération = (double) ValeurMoyenne / NombreItérationsMoyen;
@@ -56,9 +56,9 @@ namespace SimulationComplexité.Notation
         public void Print()
         {
             Console.WriteLine(
-                $"Sur {_nombreParties} parties la stratégie {Stratégie} a donné un score moyen de {ValeurMoyenne}(+/- {ToléranceScoreMoyen:P}), " +
+                $"Sur {_nombreParties} parties la stratégie {Stratégie} a donné un score moyen de {ValeurMoyenne}(~ {ToléranceScoreMoyen:P}), " +
                 $"une complexité moyenne de {ComplexitéMoyenne} sur {NombreItérationsMoyen} itérations en moyenne " +
-                $"soit {(double)ValeurMoyenne / NombreItérationsMoyen:F}(+/- {ToléranceValeurMoyenne:P}) valeur/itération.");
+                $"soit {(double)ValeurMoyenne / NombreItérationsMoyen:F}(~ {ToléranceValeurMoyenne:P}) valeur/itération.");
 
             Console.WriteLine();
         }
