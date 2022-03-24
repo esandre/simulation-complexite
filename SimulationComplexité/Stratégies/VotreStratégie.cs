@@ -4,105 +4,98 @@ namespace SimulationComplexité.Stratégies
 {
     internal class VotreStratégie : IStratégieQualité
     {
-        public uint complexityAll = 0;
+        uint qualité = 0;
+        uint scoreTotal = 0;
         /// <inheritdoc />
         public uint MontantInvestiEnQualité(uint valeurProduiteBrute,
             uint complexitéAccidentelleActuelle,
             uint scoreProduitActuel,
             ushort coutDUnDé)
         {
-            Console.WriteLine(valeurProduiteBrute);
-            Console.WriteLine(complexitéAccidentelleActuelle);
-            Console.WriteLine(scoreProduitActuel);
-            Console.WriteLine(coutDUnDé);
-
-            uint returnValeur = 0;
-            if (complexitéAccidentelleActuelle < 50)
+            if (complexitéAccidentelleActuelle >= valeurProduiteBrute)
             {
-                returnValeur = 0;
+                qualité = valeurProduiteBrute;
+                if (scoreProduitActuel == scoreTotal)
+                {
+                    qualité = (uint)(valeurProduiteBrute * 0.5);
+                }
+                if (valeurProduiteBrute < 10)
+                {
+                    qualité = 0;
+                }
             }
             else
             {
-                returnValeur = bestValueForDice(valeurProduiteBrute,
+                qualité = bestValueForDice( valeurProduiteBrute,
                     complexitéAccidentelleActuelle,
                     scoreProduitActuel,
                     coutDUnDé);
             }
 
-            this.complexityAll = scoreProduitActuel - returnValeur + complexitéAccidentelleActuelle;
-
-            return returnValeur;
+            scoreTotal = scoreProduitActuel;
+            
+            return qualité;
         }
         public uint bestValueForDice(uint valeurProduiteBrute,
             uint complexitéAccidentelleActuelle,
             uint scoreProduitActuel,
             ushort coutDUnDé)
         {
-            
-            uint numberDiceActually = scoreProduitActuel;
-            if (this.complexityAll < 180)
+            uint nombreDeDéNégatifActuel = scoreProduitActuel / coutDUnDé;
+            uint complexitéMax = (6 * (6 - nombreDeDéNégatifActuel));
+            if (complexitéMax < 12)
             {
-                if((180 - this.complexityAll) > complexitéAccidentelleActuelle)
-                {
-                    if (valeurProduiteBrute > complexitéAccidentelleActuelle)
-                    {
-                        numberDiceActually = complexitéAccidentelleActuelle;
-                    }
-                    else
-                    {
-                        numberDiceActually = valeurProduiteBrute;
-                    }
-                }
+                complexitéMax = 12;
             }
-            else if (this.complexityAll < 360)
+
+            if (complexitéAccidentelleActuelle > 36) 
             {
-                if ((360 - this.complexityAll) > complexitéAccidentelleActuelle)
+                double valeurProduiteBruteSelonDéeNégatif = 0.1 * nombreDeDéNégatifActuel;
+                if(valeurProduiteBruteSelonDéeNégatif > 0.5)
                 {
-                    if (valeurProduiteBrute > complexitéAccidentelleActuelle)
-                    {
-                        numberDiceActually = complexitéAccidentelleActuelle;
-                    }
-                    else
-                    {
-                        numberDiceActually = valeurProduiteBrute;
-                    }
+                    valeurProduiteBruteSelonDéeNégatif = 0.5;
                 }
-            }
-            else if (this.complexityAll < 540)
-            {
-                if ((540 - this.complexityAll) > complexitéAccidentelleActuelle)
+                qualité = stratégieComplexitéEgaleZéro(valeurProduiteBrute,valeurProduiteBruteSelonDéeNégatif);
+                
+                if ((scoreProduitActuel+complexitéAccidentelleActuelle) > (coutDUnDé * 6))
                 {
-                    if (valeurProduiteBrute > complexitéAccidentelleActuelle)
-                    {
-                        numberDiceActually = complexitéAccidentelleActuelle;
-                    }
-                    else
-                    {
-                        numberDiceActually = valeurProduiteBrute;
-                    }
-                }
-            }
-            else if (this.complexityAll < 720)
-            {
-                if ((720 - this.complexityAll) > complexitéAccidentelleActuelle)
-                {
-                    if (valeurProduiteBrute > complexitéAccidentelleActuelle)
-                    {
-                        numberDiceActually = complexitéAccidentelleActuelle;
-                    }
-                    else
-                    {
-                        numberDiceActually = valeurProduiteBrute;
-                    }
+                    qualité = 0; 
                 }
             }
             else
             {
-                numberDiceActually = valeurProduiteBrute;   
+                qualité = stratégieComplexitéDifférentDeZéro(valeurProduiteBrute, complexitéAccidentelleActuelle);
+                
             }
-            return numberDiceActually;
+
+            uint nombreDeDéNégatifFutur = (uint)(
+                    (scoreProduitActuel + qualité)
+                    / coutDUnDé);
+
+            if (nombreDeDéNégatifActuel != nombreDeDéNégatifFutur)
+            {
+                qualité = 0;
+            }
+
+            
+
+            return qualité;
         }
 
+        public uint stratégieComplexitéEgaleZéro(uint valeurProduiteBrute, double test)
+        {
+            return (uint)(valeurProduiteBrute * (0.5 - test));
+        }
+        public uint stratégieComplexitéDifférentDeZéro(uint valeurProduiteBrute, uint complexitéAccidentelleActuelle)
+        {
+            uint qualité = complexitéAccidentelleActuelle + (valeurProduiteBrute - complexitéAccidentelleActuelle) / 2;
+            return qualité;
+        }
+
+        public uint maxValue(uint nombreDeDéNégatifActuel)
+        {
+            return 6-nombreDeDéNégatifActuel;
+        }
         /// <inheritdoc />
         public IStratégieQualité Fork() => new VotreStratégie();
     }
