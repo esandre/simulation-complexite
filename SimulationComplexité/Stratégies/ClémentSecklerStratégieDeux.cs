@@ -2,7 +2,7 @@
 
 namespace SimulationComplexité.Stratégies
 {
-    internal class VotreStratégie : IStratégieQualité
+    internal class ClémentSecklerStratégieDeux : IStratégieQualité
     {
         uint qualité = 0;
         uint scoreTotal = 0;
@@ -48,13 +48,14 @@ namespace SimulationComplexité.Stratégies
                 complexitéMax = 12;
             }
 
-            if (complexitéAccidentelleActuelle > 36) 
+            if (complexitéAccidentelleActuelle > 8) 
             {
                 double valeurProduiteBruteSelonDéeNégatif = 0.1 * nombreDeDéNégatifActuel;
-                if(valeurProduiteBruteSelonDéeNégatif > 0.5)
+                if (valeurProduiteBruteSelonDéeNégatif > 0.4)
                 {
                     valeurProduiteBruteSelonDéeNégatif = 0.5;
                 }
+
                 qualité = stratégieComplexitéEgaleZéro(valeurProduiteBrute,valeurProduiteBruteSelonDéeNégatif);
                 
                 if ((scoreProduitActuel+complexitéAccidentelleActuelle) > (coutDUnDé * 6))
@@ -69,7 +70,7 @@ namespace SimulationComplexité.Stratégies
             }
 
             uint nombreDeDéNégatifFutur = (uint)(
-                    (scoreProduitActuel + qualité)
+                    (scoreProduitActuel +  qualité)
                     / coutDUnDé);
 
             if (nombreDeDéNégatifActuel != nombreDeDéNégatifFutur)
@@ -84,7 +85,7 @@ namespace SimulationComplexité.Stratégies
 
         public uint stratégieComplexitéEgaleZéro(uint valeurProduiteBrute, double test)
         {
-            return (uint)(valeurProduiteBrute * (0.5 - test));
+            return (uint)(valeurProduiteBrute * (0.5-test));
         }
         public uint stratégieComplexitéDifférentDeZéro(uint valeurProduiteBrute, uint complexitéAccidentelleActuelle)
         {
@@ -97,6 +98,6 @@ namespace SimulationComplexité.Stratégies
             return 6-nombreDeDéNégatifActuel;
         }
         /// <inheritdoc />
-        public IStratégieQualité Fork() => new VotreStratégie();
+        public IStratégieQualité Fork() => new ClémentSecklerStratégieDeux();
     }
 }

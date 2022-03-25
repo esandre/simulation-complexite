@@ -24,7 +24,7 @@ using SimulationComplexité.Stratégies.Prédéfinies;
 
 const int coûtDUnDé = 180;
 const int nombreDés = 12;
-const int nombreParties = 1000;
+const int nombreParties = 10000;
 const bool verbose = false;
 
 var stratégiesQualité = new IStratégieQualité[]
@@ -32,7 +32,8 @@ var stratégiesQualité = new IStratégieQualité[]
     new StratégieDavidGoodenough(),
     new StratégieQuiVaChaptiVaLoin(),
     new StratégiePrudente(),
-    new VotreStratégie()
+    new ClémentSecklerStratégieDeux(),
+    new ClémentSecklerStratégieUne()
 };
 
 // ReSharper disable once ConditionIsAlwaysTrueOrFalse
