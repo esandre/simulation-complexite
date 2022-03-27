@@ -38,24 +38,24 @@ namespace SimulationComplexité.Simulation
                 });
         }
 
-        public IOrderedEnumerable<StatistiquesStratégie> CalculerStatistiques() => 
+        public IEnumerable<StatistiquesStratégie> CalculerStatistiques() =>
             _historiqueParties
-            .Select(kv =>
-            {
-                var (stratégie, historique) = kv;
+                .Select(kv =>
+                {
+                    var (stratégie, historique) = kv;
 
-                var moyenneValeur =
-                    Convert.ToUInt32(historique.Sum(partie => partie.ValeurProduite) / historique.Count);
-                var moyenneComplexité =
-                    Convert.ToUInt32(historique.Sum(partie => partie.ComplexitéAccidentelle) / historique.Count);
-                var moyenneItérations =
-                    Convert.ToUInt16(historique.Sum(partie => partie.ItérationFinale) / historique.Count);
+                    var moyenneValeur =
+                        Convert.ToUInt32(historique.Sum(partie => partie.ValeurProduite) / historique.Count);
+                    var moyenneComplexité =
+                        Convert.ToUInt32(historique.Sum(partie => partie.ComplexitéAccidentelle) / historique.Count);
+                    var moyenneItérations =
+                        Convert.ToUInt16(historique.Sum(partie => partie.ItérationFinale) / historique.Count);
+                    var moyenneMédianes =
+                        Convert.ToUInt16(historique.Sum(partie => partie.ValeurProduiteMédiane) / historique.Count);
 
-                return new StatistiquesStratégie(stratégie, (uint) historique.Count, moyenneItérations, moyenneComplexité,
-                    moyenneValeur);
-            })
-            .AsParallel()
-            .ToArray()
-            .OrderBy(statistiques => statistiques);
+                    return new StatistiquesStratégie(stratégie, (uint)historique.Count, moyenneItérations,
+                        moyenneComplexité,
+                        moyenneValeur, moyenneMédianes);
+                });
     }
 }

@@ -42,5 +42,5 @@ var paramètresGénéraux = new ParamètresPartie(nombreDés, 0, 0, coûtDUnDé)
 
 var parties = new PartiesMultiples(sortieParties, paramètresGénéraux, stratégiesQualité);
 parties.Jouer(nombreParties);
-parties.CalculerStatistiques()
-    .PrintStatistiques();
+var statistiques = parties.CalculerStatistiques().ToArray();
+statistiques.PrintStatistiquesParValeurBrute();
