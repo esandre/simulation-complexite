@@ -3,7 +3,7 @@ using SimulationComplexité.Stratégies.Prédéfinies;
 
 namespace SimulationComplexité.Stratégies
 {
-    internal class VotreStratégie : IStratégieQualité
+    internal class PaulLereverend_Equilibre : IStratégieQualité
     {
         private static readonly StratégieQuiVaChaptiVaLoin StratégiePrudente = new ();
 
@@ -31,7 +31,6 @@ namespace SimulationComplexité.Stratégies
             {
                 return 0;
             }
-            
             // Formule pour avoir la qualité la plus optimale en restant le plus près possible de 180 -> A = (A - (B+A)/3) 
             double qualite = Math.Ceiling(valeurProduiteBruteDouble -
                                        ((valeurAvantDeRetirerLeProchainDes + valeurProduiteBruteDouble) / 3));
@@ -54,7 +53,7 @@ namespace SimulationComplexité.Stratégies
             
         }
         /// <inheritdoc />
-        public IStratégieQualité Fork() => new VotreStratégie();
+        public IStratégieQualité Fork() => new PaulLereverend_Equilibre();
         
     }
 }
