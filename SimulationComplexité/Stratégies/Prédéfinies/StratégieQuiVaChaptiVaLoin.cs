@@ -12,10 +12,13 @@ namespace SimulationComplexité.Stratégies.Prédéfinies
             uint scoreProduitActuel, 
             ushort coutDUnDé)
         {
-            if (complexitéAccidentelleActuelle > valeurProduiteBrute) return valeurProduiteBrute;
+            if (complexitéAccidentelleActuelle > valeurProduiteBrute)
+            {
+                return valeurProduiteBrute;
+            }
             var valeurInvestissableEnProduit = valeurProduiteBrute - complexitéAccidentelleActuelle;
-
-            return complexitéAccidentelleActuelle + valeurInvestissableEnProduit / 2;
+            var enQualité = complexitéAccidentelleActuelle + valeurInvestissableEnProduit / 2;
+            return enQualité;
         }
 
         /// <inheritdoc />
