@@ -1,28 +1,49 @@
 ﻿using SimulationComplexité.Notation;
-using SimulationComplexité.Stratégies;
-using SimulationComplexité.Stratégies.Prédéfinies;
 
 namespace SimulationComplexité.Sortie
 {
     internal static class PrintStatistiquesExtension
     {
-        public static void PrintStatistiques(this IOrderedEnumerable<StatistiquesStratégie> statistiques)
-        {
-            IStratégieÉtalon meilleurÉtalon = new StratégieDavidGoodenough();
-            var stratégieCustomClassée = false;
+        private static readonly IComparer<StatistiquesStratégie> ComparaisonSecondeChance =
+            new ComparaisonParValeurMoyenneParItération(
+                StatistiquesStratégie.ToléranceValeurMoyenneParItération,
+                new ComparaisonParComplexitéFinale()
+            );
 
-            foreach (var statistiquesStratégie in statistiques)
+        private static readonly IComparer<StatistiquesStratégie> ComparaisonParValeurBrute =
+            new ComparaisonParValeurBrute(
+                StatistiquesStratégie.ToléranceValeurBrute,
+                ComparaisonSecondeChance
+            );
+
+        private static readonly IComparer<StatistiquesStratégie> ComparaisonParMédiane =
+            new ComparaisonParValeurMédiane(
+                StatistiquesStratégie.ToléranceValeurMédiane,
+                ComparaisonSecondeChance
+            );
+
+        public static void PrintStatistiquesParMédiane(this IEnumerable<StatistiquesStratégie> statistiques)
+        {
+            foreach (var statistiquesStratégie in statistiques.OrderBy(e => e, ComparaisonParMédiane))
+                statistiquesStratégie.Print();
+        }
+
+        public static void PrintStatistiquesParValeurBrute(this IEnumerable<StatistiquesStratégie> statistiques)
+        {
+            foreach (var statistiquesStratégie in statistiques.OrderBy(e => e, ComparaisonParValeurBrute))
             {
-                var stratégie = statistiquesStratégie.Stratégie;
-                if (!stratégieCustomClassée && stratégie is IStratégieÉtalon étalon) meilleurÉtalon = étalon;
+                {
+                    if (statistiquesStratégie.Stratégie is IStratégieÉtalon étalon)
+                        Console.WriteLine($"-----{étalon.Note}/20-----");
+                }
 
                 statistiquesStratégie.Print();
 
-                if (stratégie is StratégieClermontGeoffrey) stratégieCustomClassée = true;
+                {
+                    if (statistiquesStratégie.Stratégie is IStratégieÉtalon étalon)
+                        Console.WriteLine($"-----{étalon.Note+1}/20-----");
+                }
             }
-
-            Console.WriteLine(
-                $"Votre stratégie a obtenu la note de {meilleurÉtalon.Note + 1}/20 pour s'être placée au-dessus de {meilleurÉtalon}");
         }
     }
 }

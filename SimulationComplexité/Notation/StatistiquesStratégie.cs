@@ -2,7 +2,7 @@
 
 namespace SimulationComplexité.Notation
 {
-    internal class StatistiquesStratégie : IComparable<StatistiquesStratégie>
+    internal class StatistiquesStratégie
     {
         private readonly uint _nombreParties;
 
@@ -11,48 +11,35 @@ namespace SimulationComplexité.Notation
             uint nombreParties,
             ushort nombreItérationsMoyen, 
             uint complexitéMoyenne, 
-            uint valeurMoyenne)
+            uint valeurMoyenne,
+            uint valeurMédiane)
         {
             _nombreParties = nombreParties;
             Stratégie = stratégie;
             NombreItérationsMoyen = nombreItérationsMoyen;
             ComplexitéMoyenne = complexitéMoyenne;
             ValeurMoyenne = valeurMoyenne;
+            ValeurMédiane = valeurMédiane;
         }
 
-        private const double ToléranceValeurMoyenne = 0.05;
+        public const ushort ToléranceValeurMoyenneParItération = 5;
+        public const ushort ToléranceValeurBrute = 5;
+        public const ushort ToléranceValeurMédiane = 5;
 
         public IStratégieQualité Stratégie { get; }
-        private ushort NombreItérationsMoyen { get; }
-        private uint ComplexitéMoyenne { get; }
-        private uint ValeurMoyenne { get; }
-
-        /// <inheritdoc />
-        public int CompareTo(StatistiquesStratégie? other)
-        {
-            if (other is null) return 1;
-
-            if (ValeurMoyenne != other.ValeurMoyenne)
-                return SubstractUint(ValeurMoyenne, other.ValeurMoyenne);
-
-            var valeurMoyenneParItération = (double) ValeurMoyenne / NombreItérationsMoyen;
-            var valeurMoyenneParItérationOther = (double) other.ValeurMoyenne / other.NombreItérationsMoyen;
-            var différence = valeurMoyenneParItération - valeurMoyenneParItérationOther;
-
-            if (différence > ToléranceValeurMoyenne) return 1;
-            if (différence < -ToléranceValeurMoyenne) return -1;
-
-            return SubstractUint(ComplexitéMoyenne, other.ComplexitéMoyenne);
-        }
-
-        private static int SubstractUint(uint a, uint b) => (int)a - (int) b;
+        public ushort NombreItérationsMoyen { get; }
+        public uint ComplexitéMoyenne { get; }
+        public uint ValeurMoyenne { get; }
+        public uint ValeurMédiane { get; }
 
         public void Print()
         {
             Console.WriteLine(
-                $"Sur {_nombreParties} parties la stratégie {Stratégie} a donné un score moyen de {ValeurMoyenne}, " +
+                $"Sur {_nombreParties} parties la stratégie {Stratégie} " +
+                $"a donné un score moyen de {ValeurMoyenne}(~{ToléranceValeurMoyenneParItération / 10.0}%), " +
                 $"une complexité moyenne de {ComplexitéMoyenne} sur {NombreItérationsMoyen} itérations en moyenne " +
-                $"soit {(double)ValeurMoyenne / NombreItérationsMoyen:F} valeur/itération.");
+                $"et une valeur médiane de {ValeurMédiane}(~{ToléranceValeurMédiane/10.0}%) " +
+                $"soit {(double)ValeurMoyenne / NombreItérationsMoyen:F}(~{ToléranceValeurBrute / 10.0}%) valeur/itération.");
 
             Console.WriteLine();
         }
