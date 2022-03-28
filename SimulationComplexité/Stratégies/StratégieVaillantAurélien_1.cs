@@ -22,7 +22,7 @@ namespace SimulationComplexité.Stratégies
             // Stratégie prudente avec régression de l'investissement en qualité
             valeurAMettreEnQualité = (complexitéAccidentelleActuelle + valeurProduiteBrute) / 2;
 
-            valeurAMettreEnQualité -= 2;
+            valeurAMettreEnQualité -= 1;
 
             valeurAMettreEnQualité = valeurAMettreEnQualité < 0 ? 0 : valeurAMettreEnQualité;
   
