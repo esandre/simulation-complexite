@@ -8,24 +8,6 @@ namespace SimulationComplexité.Stratégies
         /// <inheritdoc />
         public uint MontantInvestiEnQualité(uint valeurProduiteBrute, uint complexitéAccidentelleActuelle, uint scoreProduitActuel, ushort coutDUnDé)
         {
-            // BON COURAGE
-            /*if (complexitéAccidentelleActuelle > valeurProduiteBrute) {
-                //Console.WriteLine(scoreProduitActuel + " à l'iteration : " + iterations);
-                return 0;
-            }
-
-            if (iterations % 10 == 0 ) {
-                iterations++;
-                //Console.WriteLine(scoreProduitActuel + " à l'iteration : " + iterations);
-                return valeurProduiteBrute / 2;
-            }
-
-            //Console.WriteLine(scoreProduitActuel + " à l'iteration : " + iterations);
-
-            var valeurInvestissableEnProduit = valeurProduiteBrute - complexitéAccidentelleActuelle;
-            iterations++;
-            return complexitéAccidentelleActuelle + valeurInvestissableEnProduit / 2; */
-            
             uint valeurQualité = 0;
 
             if (iterations == 0) {
