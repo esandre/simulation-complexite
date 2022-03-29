@@ -3,7 +3,7 @@ using SimulationComplexité.Stratégies.Prédéfinies;
 
 namespace SimulationComplexité.Stratégies
 {
-    internal class HugoHuetStratégie : IStratégieQualité
+    internal class HugoHuet_Production : IStratégieQualité
     {
         private static readonly StratégieQuiVaChaptiVaLoin StratégiePrudente = new ();
 
@@ -74,6 +74,6 @@ namespace SimulationComplexité.Stratégies
         }
 
         /// <inheritdoc />
-        public IStratégieQualité Fork() => new HugoHuetStratégie();
+        public IStratégieQualité Fork() => new HugoHuet_Production();
     }
 }
