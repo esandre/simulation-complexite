@@ -1,4 +1,4 @@
-﻿namespace SimulationComplexité.Simulation
+﻿namespace SimulationComplexité.Simulation.Stratégie
 {
     internal interface IStratégieQualité
     {
@@ -7,5 +7,7 @@
             uint complexitéAccidentelleActuelle,
             uint scoreProduitActuel,
             ushort coûtDUnDé);
+
+        IStratégieQualité Fork();
     }
 }

@@ -1,4 +1,5 @@
-﻿using SimulationComplexité.Sortie;
+﻿using SimulationComplexité.Simulation.Stratégie;
+using SimulationComplexité.Sortie;
 
 namespace SimulationComplexité.Simulation
 {
@@ -9,12 +10,15 @@ namespace SimulationComplexité.Simulation
         private readonly ParamètresPartie _paramètres;
         private readonly IStratégieQualité _stratégieQualité;
 
-        public Partie(ISortiePartie sortie, Dés6Faces simulateurLancer, ParamètresPartie paramètres, IStratégieQualité stratégieQualité)
+        public Partie(ISortiePartie sortie, 
+            Dés6Faces simulateurLancer, 
+            ParamètresPartie paramètres, 
+            IStratégieQualité stratégieQualité)
         {
             _sortie = sortie;
             _simulateurLancer = simulateurLancer;
             _paramètres = paramètres;
-            _stratégieQualité = stratégieQualité;
+            _stratégieQualité = new ProtectionStratégieQualité(stratégieQualité);
         }
 
         public RésultatPartie Jouer()
@@ -78,6 +82,7 @@ namespace SimulationComplexité.Simulation
             }
 
             var valeurProduite = historiqueValeurProduite.Sum();
+            var valeurMédiane = GetMedian(historiqueValeurProduite);
 
             _sortie.WriteLine($"Votre projet est mort après avoir produit {valeurProduite} valeur " +
                                     $"et {complexitéAccidentelle} complexité accidentelle en {itérationActuelle} itérations.");
@@ -85,7 +90,20 @@ namespace SimulationComplexité.Simulation
             _sortie.WriteLine();
             _sortie.WriteLine();
 
-            return new RésultatPartie(complexitéAccidentelle, valeurProduite, itérationActuelle);
+            return new RésultatPartie(complexitéAccidentelle, valeurProduite, itérationActuelle, valeurMédiane);
+        }
+
+        private static uint GetMedian(IEnumerable<uint> sourceNumbers)
+        {
+            var source = sourceNumbers.ToList();
+            source.Sort();
+            
+            var size = source.Count;
+            var mid = size / 2;
+            var median = size % 2 != 0
+                ? source[mid]
+                : (source[mid] + source[mid - 1]) / 2;
+            return median;
         }
     }
 }

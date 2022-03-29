@@ -1,4 +1,5 @@
 ﻿using SimulationComplexité.Simulation;
+using SimulationComplexité.Simulation.Stratégie;
 using SimulationComplexité.Sortie;
 using SimulationComplexité.Stratégies;
 using SimulationComplexité.Stratégies.Prédéfinies;
@@ -31,7 +32,7 @@ var stratégiesQualité = new IStratégieQualité[]
     new StratégieDavidGoodenough(),
     new StratégieQuiVaChaptiVaLoin(),
     new StratégiePrudente(),
-    new VotreStratégie()
+    new StratégieJoulieAntonin()
 };
 
 // ReSharper disable once ConditionIsAlwaysTrueOrFalse
@@ -41,5 +42,5 @@ var paramètresGénéraux = new ParamètresPartie(nombreDés, 0, 0, coûtDUnDé)
 
 var parties = new PartiesMultiples(sortieParties, paramètresGénéraux, stratégiesQualité);
 parties.Jouer(nombreParties);
-parties.CalculerStatistiques()
-    .PrintStatistiques();
+var statistiques = parties.CalculerStatistiques().ToArray();
+statistiques.PrintStatistiquesParValeurBrute();
