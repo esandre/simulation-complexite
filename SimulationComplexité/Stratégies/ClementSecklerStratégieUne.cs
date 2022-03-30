@@ -14,7 +14,7 @@ namespace SimulationComplexité.Stratégies
         {
             if (complexitéAccidentelleActuelle >= valeurProduiteBrute)
             {
-                qualité = valeurProduiteBrute;
+                qualité = (uint)(valeurProduiteBrute *0.95);
                 if (scoreProduitActuel == scoreTotal)
                 {
                     qualité = (uint)(valeurProduiteBrute * 0.5);
@@ -48,7 +48,7 @@ namespace SimulationComplexité.Stratégies
                 complexitéMax = 12;
             }
 
-            if (complexitéAccidentelleActuelle > 1)
+            if (complexitéAccidentelleActuelle > 20)
             {
                 double valeurProduiteBruteSelonDéeNégatif = 0.1 * nombreDeDéNégatifActuel;
                 if (valeurProduiteBruteSelonDéeNégatif > 0.4)
@@ -98,6 +98,6 @@ namespace SimulationComplexité.Stratégies
             return 6 - nombreDeDéNégatifActuel;
         }
         /// <inheritdoc />
-        public IStratégieQualité Fork() => new ClémentSecklerStratégieDeux();
+        public IStratégieQualité Fork() => new ClémentSecklerStratégieUne();
     }
 }
