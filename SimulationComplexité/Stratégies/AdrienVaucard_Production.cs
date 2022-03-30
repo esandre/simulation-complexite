@@ -10,7 +10,7 @@ namespace SimulationComplexité.Stratégies
         public uint MontantInvestiEnQualité(uint valeurProduiteBrute, uint complexitéAccidentelleActuelle, uint scoreProduitActuel, ushort coutDUnDé)
         {
             uint investissementQualité = 0;
-            uint entropie = (scoreProduitActuel + complexitéAccidentelleActuelle) / 18;
+            uint entropie = (scoreProduitActuel + complexitéAccidentelleActuelle) / coutDUnDé;
             
             if (complexitéAccidentelleActuelle <= valeurProduiteBrute)
             {
