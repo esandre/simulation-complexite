@@ -1,6 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using System.Collections.Immutable;
 using SimulationComplexité.Notation;
+using SimulationComplexité.Simulation.Stratégie;
 using SimulationComplexité.Sortie;
 
 namespace SimulationComplexité.Simulation
@@ -11,7 +12,10 @@ namespace SimulationComplexité.Simulation
         private readonly ParamètresPartie _paramètresGénéraux;
         private readonly IImmutableDictionary<IStratégieQualité, ConcurrentBag<RésultatPartie>> _historiqueParties;
 
-        public PartiesMultiples(ISortiePartie sortie, ParamètresPartie paramètresGénéraux, IEnumerable<IStratégieQualité> stratégies)
+        public PartiesMultiples(
+            ISortiePartie sortie, 
+            ParamètresPartie paramètresGénéraux, 
+            IEnumerable<IStratégieQualité> stratégies)
         {
             _sortie = sortie;
             _paramètresGénéraux = paramètresGénéraux;
@@ -26,31 +30,32 @@ namespace SimulationComplexité.Simulation
                     Parallel.For(0, nombreParties,
                         _ =>
                         {
+                            var stratégie = stratégieQualité.Fork();
                             var partie = new Partie(_sortie, new Dés6Faces(), _paramètresGénéraux,
-                                stratégieQualité);
+                                stratégie);
                             _historiqueParties[stratégieQualité].Add(partie.Jouer());
                         });
                 });
         }
 
-        public IOrderedEnumerable<StatistiquesStratégie> CalculerStatistiques() => 
+        public IEnumerable<StatistiquesStratégie> CalculerStatistiques() =>
             _historiqueParties
-            .Select(kv =>
-            {
-                var (stratégie, historique) = kv;
+                .Select(kv =>
+                {
+                    var (stratégie, historique) = kv;
 
-                var moyenneValeur =
-                    Convert.ToUInt32(historique.Sum(partie => partie.ValeurProduite) / historique.Count);
-                var moyenneComplexité =
-                    Convert.ToUInt32(historique.Sum(partie => partie.ComplexitéAccidentelle) / historique.Count);
-                var moyenneItérations =
-                    Convert.ToUInt16(historique.Sum(partie => partie.ItérationFinale) / historique.Count);
+                    var moyenneValeur =
+                        Convert.ToUInt32(historique.Sum(partie => partie.ValeurProduite) / historique.Count);
+                    var moyenneComplexité =
+                        Convert.ToUInt32(historique.Sum(partie => partie.ComplexitéAccidentelle) / historique.Count);
+                    var moyenneItérations =
+                        Convert.ToUInt16(historique.Sum(partie => partie.ItérationFinale) / historique.Count);
+                    var moyenneMédianes =
+                        Convert.ToUInt16(historique.Sum(partie => partie.ValeurProduiteMédiane) / historique.Count);
 
-                return new StatistiquesStratégie(stratégie, (uint) historique.Count, moyenneItérations, moyenneComplexité,
-                    moyenneValeur);
-            })
-            .AsParallel()
-            .ToArray()
-            .OrderBy(statistiques => statistiques);
+                    return new StatistiquesStratégie(stratégie, (uint)historique.Count, moyenneItérations,
+                        moyenneComplexité,
+                        moyenneValeur, moyenneMédianes);
+                });
     }
 }

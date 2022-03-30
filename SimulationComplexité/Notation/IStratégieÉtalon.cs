@@ -1,4 +1,4 @@
-﻿using SimulationComplexité.Simulation;
+﻿using SimulationComplexité.Simulation.Stratégie;
 
 namespace SimulationComplexité.Notation
 {

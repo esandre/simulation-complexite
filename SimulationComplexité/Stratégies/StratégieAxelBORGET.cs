@@ -18,6 +18,6 @@ namespace SimulationComplexité.Stratégies
         }
 
         /// <inheritdoc />
-        public IStratégieQualité Fork() => new VotreStratégie();
+        public IStratégieQualité Fork() => new StratégieAxelBORGET();
     }
 }
