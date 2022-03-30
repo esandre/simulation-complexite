@@ -41,6 +41,6 @@ namespace SimulationComplexité.Stratégies
 
 
         /// <inheritdoc />
-        public IStratégieQualité Fork() => new StratégieVaillantAurélien_1();
+        public IStratégieQualité Fork() => new StratégieVaillantAurélien_2();
     }
 }

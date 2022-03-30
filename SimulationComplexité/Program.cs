@@ -32,7 +32,6 @@ var stratégiesQualité = new IStratégieQualité[]
     new StratégieDavidGoodenough(),
     new StratégieQuiVaChaptiVaLoin(),
     new StratégiePrudente(),
-    new StratégieVaillantAurélien_1(),
     new StratégieVaillantAurélien_2(),
 };
 
