@@ -32,7 +32,7 @@ var stratégiesQualité = new IStratégieQualité[]
     new StratégieDavidGoodenough(),
     new StratégieQuiVaChaptiVaLoin(),
     new StratégiePrudente(),
-    new VotreStratégie()
+    new Strategie_Dorian_Letort()
 };
 
 // ReSharper disable once ConditionIsAlwaysTrueOrFalse
