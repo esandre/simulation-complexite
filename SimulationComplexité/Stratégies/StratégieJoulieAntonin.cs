@@ -35,7 +35,7 @@ namespace SimulationComplexité.Stratégies
                 }
                 else
                 {
-                    while ((complexitéPotentielle + différenceComplexitéAdditionnelle) / 180 < entropieHigher + 1 || investissementQualité < valeurProduiteBrute + 1)
+                    while ((complexitéPotentielle + différenceComplexitéAdditionnelle) / 180 < entropieHigher + 1 || investissementQualité < 1)
                     {
                         investissementQualité--;
                     }
