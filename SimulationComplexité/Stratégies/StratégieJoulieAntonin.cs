@@ -29,18 +29,16 @@ namespace SimulationComplexité.Stratégies
 
                 var complexitéPotentielle = complexitéAccidentelleActuelle + différenceComplexitéAdditionnelle;
 
-                if ((complexitéPotentielle + différenceComplexitéAdditionnelle) / 180 <= entropie)
+                if ((complexitéPotentielle + différenceComplexitéAdditionnelle) / 180 <= entropieHigher)
                 {
                     return investissementQualité;
                 }
                 else
                 {
-                    while ((complexitéPotentielle + différenceComplexitéAdditionnelle) / 180 < entropieHigher + 1)
+                    while ((complexitéPotentielle + différenceComplexitéAdditionnelle) / 180 < entropieHigher + 1 || investissementQualité < valeurProduiteBrute + 1)
                     {
                         investissementQualité--;
                     }
-
-                    investissementQualité++;
 
                     return investissementQualité;
                 }
