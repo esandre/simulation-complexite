@@ -1,43 +1,51 @@
 ﻿using SimulationComplexité.Simulation.Stratégie;
-using SimulationComplexité.Stratégies.Prédéfinies;
 
 namespace SimulationComplexité.Stratégies
 {
     internal class VotreStratégie : IStratégieQualité
     {
-        private static readonly StratégieQuiVaChaptiVaLoin StratégiePrudente = new ();
-
         /// <inheritdoc />
-        public uint MontantInvestiEnQualité(uint valeurProduiteBrute, uint complexitéAccidentelleActuelle, uint scoreProduitActuel, ushort coutDUnDé)
+        public uint MontantInvestiEnQualité(uint valeurProduiteBrute,
+            uint complexitéAccidentelleActuelle, uint scoreProduitActuel, ushort coutDUnDé)
         {
-            var maximumInvestissable = StratégiePrudente.MontantInvestiEnQualité(
-                valeurProduiteBrute, 
-                complexitéAccidentelleActuelle, 
-                scoreProduitActuel, 
-                coutDUnDé);
 
-            var complexitéTotaleInitale = scoreProduitActuel + complexitéAccidentelleActuelle;
+            var valeurInvestissableEnProduit = valeurProduiteBrute - complexitéAccidentelleActuelle;
 
-            (uint InvestissementQualité, uint NombreDésEntropieProjeté, uint MontantProduit) meilleurInvestissement = 
-                (0, (complexitéTotaleInitale + valeurProduiteBrute * 2) / coutDUnDé, valeurProduiteBrute);
-            
-            for (uint montantInvestiEnQualité = 1; montantInvestiEnQualité <= maximumInvestissable; montantInvestiEnQualité++)
+
+            for (uint i = valeurProduiteBrute; i > 0; i--)
             {
-                var montantInvestiEnProduit = Convert.ToUInt32(valeurProduiteBrute - montantInvestiEnQualité);
-                var complexitéProduite = montantInvestiEnProduit * 2;
+                var qualiteactuelle = valeurProduiteBrute - i;
+                var prod = i;
+                var qualfuture = complexitéAccidentelleActuelle - qualiteactuelle + prod;
+                var future = (qualfuture + scoreProduitActuel) / 180;
+                var passe = (complexitéAccidentelleActuelle + scoreProduitActuel) / 180;
+                if (qualfuture < valeurProduiteBrute)
+                {
+                    if (future < passe && qualfuture >= 0) return qualiteactuelle;
+                }
 
-                var complexitéTotaleProjetée =
-                    Convert.ToUInt32(complexitéTotaleInitale + complexitéProduite - montantInvestiEnQualité);
-
-                var nombreDésEntropieProjeté = complexitéTotaleProjetée / coutDUnDé;
-
-                if (nombreDésEntropieProjeté < meilleurInvestissement.NombreDésEntropieProjeté
-                    || nombreDésEntropieProjeté == meilleurInvestissement.NombreDésEntropieProjeté
-                    && montantInvestiEnProduit > meilleurInvestissement.MontantProduit)
-                    meilleurInvestissement = (montantInvestiEnQualité, nombreDésEntropieProjeté, montantInvestiEnProduit);
             }
 
-            return meilleurInvestissement.InvestissementQualité;
+
+
+            for (uint i = valeurProduiteBrute; i > 0; i--)
+            {
+                var qualiteactuelle = valeurProduiteBrute - i;
+                var prod = i;
+                var qualfuture = complexitéAccidentelleActuelle - qualiteactuelle + prod;
+
+                if (qualfuture <= 1) return qualiteactuelle;
+
+
+            }
+
+
+
+
+
+
+            return 0;
+
         }
 
         /// <inheritdoc />
