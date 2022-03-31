@@ -3,7 +3,7 @@ using SimulationComplexité.Stratégies.Prédéfinies;
 
 namespace SimulationComplexité.Stratégies
 {
-    internal class VotreStratégie : IStratégieQualité
+    internal class StratégieGuillaumeGouy : IStratégieQualité
     {
      
         private int _iteration = 0;
@@ -157,6 +157,6 @@ namespace SimulationComplexité.Stratégies
             return investissementQualite;
         }
         /// <inheritdoc />
-        public IStratégieQualité Fork() => new VotreStratégie();
+        public IStratégieQualité Fork() => new StratégieGuillaumeGouy();
     }
 }
