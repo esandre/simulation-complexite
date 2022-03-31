@@ -1,10 +1,7 @@
-﻿using SimulationComplexité.Simulation;
+﻿using System.Reflection;
+using SimulationComplexité.Simulation;
 using SimulationComplexité.Simulation.Stratégie;
 using SimulationComplexité.Sortie;
-using SimulationComplexité.Stratégies;
-using SimulationComplexité.Stratégies.Prédéfinies;
-
-#pragma warning disable CS0162
 
 /*
  * README
@@ -24,16 +21,15 @@ using SimulationComplexité.Stratégies.Prédéfinies;
 
 const int coûtDUnDé = 180;
 const int nombreDés = 12;
-const int nombreParties = 1000;
+const int nombreParties = 10000;
 const bool verbose = false;
 
-var stratégiesQualité = new IStratégieQualité[]
-{
-    new StratégieDavidGoodenough(),
-    new StratégieQuiVaChaptiVaLoin(),
-    new StratégiePrudente(),
-    new VotreStratégie()
-};
+var stratégiesQualité = Assembly.GetAssembly(typeof(IStratégieQualité))!
+    .GetTypes()
+    .Where(t => t.GetInterfaces().Contains(typeof(IStratégieQualité)))
+    .Where(t => t.GetConstructor(Type.EmptyTypes) != null)
+    .Select(Activator.CreateInstance)
+    .Cast<IStratégieQualité>();
 
 // ReSharper disable once ConditionIsAlwaysTrueOrFalse
 // ReSharper disable once HeuristicUnreachableCode
