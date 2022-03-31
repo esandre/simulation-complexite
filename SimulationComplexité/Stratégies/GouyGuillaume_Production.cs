@@ -1,162 +1,156 @@
 ﻿using SimulationComplexité.Simulation.Stratégie;
-using SimulationComplexité.Stratégies.Prédéfinies;
 
-namespace SimulationComplexité.Stratégies
+namespace SimulationComplexité.Stratégies;
+
+internal class StratégieGuillaumeGouy : IStratégieQualité
 {
-    internal class StratégieGuillaumeGouy : IStratégieQualité
+    private int _iteration;
+
+    // ce booleen permet de  ralentir la courbe de la croissance de la comlexité accidentelle
+    // Son usage est commenté car il nuit aux perfs ...
+    private bool _perdreEnQualite;
+    private int _sommeInvestissementProduit;
+    private int _sommeInvestissementQualite;
+    private int projetMort = 55;
+    private bool refactoEfficace = true;
+    private int seuilComplexiteAdmis = 9;
+
+    /// <inheritdoc />
+    public uint MontantInvestiEnQualité(uint valeurProduiteBrute, uint complexitéAccidentelleActuelle,
+        uint scoreProduitActuel, ushort coutDUnDé)
     {
-     
-        private int _iteration = 0;
-        private int _sommeInvestissementProduit = 0;
-        private int _sommeInvestissementQualite = 0;
-        // ce booleen permet de  ralentir la courbe de la croissance de la comlexité accidentelle
-        // Son usage est commenté car il nuit aux perfs ...
-        private bool _perdreEnQualite;
-        private int seuilComplexiteAdmis = 9;
-        private int projetMort = 55;
-        private bool refactoEfficace = true;
-        
-        /// <inheritdoc />
-        public uint MontantInvestiEnQualité(uint valeurProduiteBrute, uint complexitéAccidentelleActuelle, uint scoreProduitActuel, ushort coutDUnDé)
+        /*if (_iteration == 0)
         {
-            /*if (_iteration == 0)
-            {
-                _perdreEnQualite = false;
-                
-                
-            }*/
+            _perdreEnQualite = false;
             
-            _iteration ++;
-            uint investissementQualite = this.soustractionInvestissementProduitInvestQualitéNull(valeurProduiteBrute, _iteration , complexitéAccidentelleActuelle);
+            
+        }*/
 
-            if (valeurProduiteBrute > 2 && refactoEfficace == true)
-            {
-                investissementQualite =
-                    this.admettreCroissanceComplexiteAccidentellePhaseAscendate(investissementQualite/*,ref _perdreEnQualite*/);    
-            }
+        _iteration++;
+        var investissementQualite =
+            soustractionInvestissementProduitInvestQualitéNull(valeurProduiteBrute, _iteration,
+                complexitéAccidentelleActuelle);
 
-            if (complexitéAccidentelleActuelle > seuilComplexiteAdmis && valeurProduiteBrute > 2 && _iteration < projetMort)
-            {
-               
-                investissementQualite = this.refacto(complexitéAccidentelleActuelle , valeurProduiteBrute , ref refactoEfficace);
-            }
-            
-            
-            return investissementQualite;
+        /*if (valeurProduiteBrute > 2 && refactoEfficace == true)
+        {
+            investissementQualite =
+                this.admettreCroissanceComplexiteAccidentellePhaseAscendate(investissementQualite/*,ref _perdreEnQualite);    
         }
 
-        public uint soustractionInvestissementProduitInvestQualitéNull(uint valeurProduiteBrute ,int iterationActuelle , uint complexitéAccidentelleActuelle )
+        if (complexitéAccidentelleActuelle > seuilComplexiteAdmis && valeurProduiteBrute > 2 && _iteration < projetMort)
         {
+           
+            investissementQualite = this.refacto(complexitéAccidentelleActuelle , valeurProduiteBrute , ref refactoEfficace);
+        }
+        */
 
-            double investissemntQualite = 0;
-            double invesissementProduit = 0;
-            
-            // maniere d investir --> 
-            float valeurProduiteParDeux =  (float)valeurProduiteBrute / 2;
-            float modulo = valeurProduiteParDeux % 2;
+        return investissementQualite;
+    }
 
-            if (valeurProduiteParDeux % 2 == 0)
+    /// <inheritdoc />
+    public IStratégieQualité Fork()
+    {
+        return new StratégieGuillaumeGouy();
+    }
+
+    public uint soustractionInvestissementProduitInvestQualitéNull(uint valeurProduiteBrute, int iterationActuelle,
+        uint complexitéAccidentelleActuelle)
+    {
+        double investissemntQualite = 0;
+        double invesissementProduit = 0;
+
+        // maniere d investir --> 
+        var valeurProduiteParDeux = (float)valeurProduiteBrute / 2;
+        var modulo = valeurProduiteParDeux % 2;
+
+        if (valeurProduiteParDeux % 2 == 0)
+        {
+            investissemntQualite = Math.Truncate(valeurProduiteParDeux);
+            invesissementProduit = Math.Round(valeurProduiteParDeux);
+
+            _sommeInvestissementProduit = _sommeInvestissementProduit + (int)invesissementProduit;
+            _sommeInvestissementQualite = _sommeInvestissementQualite + (int)investissemntQualite;
+        }
+
+        if (valeurProduiteParDeux % 2 != 0 && _iteration == 1)
+        {
+            investissemntQualite = Math.Truncate(valeurProduiteParDeux);
+            // observer comporterment lorque x = .5
+            invesissementProduit = Math.Round(valeurProduiteParDeux, MidpointRounding.AwayFromZero);
+
+            _sommeInvestissementProduit = _sommeInvestissementProduit + (int)invesissementProduit;
+            _sommeInvestissementQualite = _sommeInvestissementQualite + (int)investissemntQualite;
+        }
+
+
+        if (valeurProduiteParDeux % 2 != 0 && _iteration > 1)
+        {
+            if (_sommeInvestissementProduit > _sommeInvestissementQualite && complexitéAccidentelleActuelle > 0)
             {
-                 investissemntQualite = Math.Truncate(valeurProduiteParDeux);
-                 invesissementProduit = Math.Round(valeurProduiteParDeux);
-
-                 _sommeInvestissementProduit = _sommeInvestissementProduit + (int)invesissementProduit;
-                 _sommeInvestissementQualite = _sommeInvestissementQualite + (int)investissemntQualite;
+                invesissementProduit = Math.Truncate(valeurProduiteParDeux);
+                investissemntQualite = Math.Round(valeurProduiteParDeux, MidpointRounding.AwayFromZero);
 
 
+                _sommeInvestissementProduit = _sommeInvestissementProduit + (int)invesissementProduit;
+                _sommeInvestissementQualite = _sommeInvestissementQualite + (int)investissemntQualite;
             }
-
-            if ((valeurProduiteParDeux % 2 != 0)  && (_iteration == 1) )
+            else if (_sommeInvestissementQualite > _sommeInvestissementProduit)
             {
                 investissemntQualite = Math.Truncate(valeurProduiteParDeux);
-                // observer comporterment lorque x = .5
                 invesissementProduit = Math.Round(valeurProduiteParDeux, MidpointRounding.AwayFromZero);
-                
+
                 _sommeInvestissementProduit = _sommeInvestissementProduit + (int)invesissementProduit;
                 _sommeInvestissementQualite = _sommeInvestissementQualite + (int)investissemntQualite;
             }
 
-            
-                if ((valeurProduiteParDeux % 2 != 0) && (_iteration > 1))
-                {
-                    if ((_sommeInvestissementProduit > _sommeInvestissementQualite) && complexitéAccidentelleActuelle > 0)
-                    {
-                        
-                        invesissementProduit = Math.Truncate(valeurProduiteParDeux);
-                        investissemntQualite = Math.Round(valeurProduiteParDeux, MidpointRounding.AwayFromZero);
-                        
+            else if (_sommeInvestissementQualite == _sommeInvestissementProduit)
+            {
+                investissemntQualite = Math.Truncate(valeurProduiteParDeux);
+                invesissementProduit = Math.Round(valeurProduiteParDeux, MidpointRounding.AwayFromZero);
 
-                        _sommeInvestissementProduit = _sommeInvestissementProduit + (int) invesissementProduit;
-                        _sommeInvestissementQualite = _sommeInvestissementQualite + (int) investissemntQualite;
-                    }
-                    else if (_sommeInvestissementQualite > _sommeInvestissementProduit)
-                    {
-                        
-                        investissemntQualite = Math.Truncate(valeurProduiteParDeux);
-                        invesissementProduit = Math.Round(valeurProduiteParDeux, MidpointRounding.AwayFromZero);
-
-                        _sommeInvestissementProduit = _sommeInvestissementProduit + (int) invesissementProduit;
-                        _sommeInvestissementQualite = _sommeInvestissementQualite + (int) investissemntQualite;
-                    }
-                    
-                    else if (_sommeInvestissementQualite == _sommeInvestissementProduit)
-                    {
-                        investissemntQualite = Math.Truncate(valeurProduiteParDeux);
-                        invesissementProduit = Math.Round(valeurProduiteParDeux, MidpointRounding.AwayFromZero);
-
-                        _sommeInvestissementProduit = _sommeInvestissementProduit + (int) invesissementProduit;
-                        _sommeInvestissementQualite = _sommeInvestissementQualite + (int) investissemntQualite;
-                    }
-                }
-                
-                return Convert.ToUInt32(investissemntQualite);
+                _sommeInvestissementProduit = _sommeInvestissementProduit + (int)invesissementProduit;
+                _sommeInvestissementQualite = _sommeInvestissementQualite + (int)investissemntQualite;
+            }
         }
-        public uint admettreCroissanceComplexiteAccidentellePhaseAscendate( uint investissementQualité /*,ref bool unSurDeux*/)
+
+        return Convert.ToUInt32(investissemntQualite);
+    }
+
+    public uint admettreCroissanceComplexiteAccidentellePhaseAscendate(
+        uint investissementQualité /*,ref bool unSurDeux*/)
+    {
+        // DETAIL RAISONNEMENT :
+        // Cet algo a pour but de stimuler l 'investissement produit en relativisant l'investissement qualité
+
+        /*if (unSurDeux)
         {
-            // DETAIL RAISONNEMENT :
-            // Cet algo a pour but de stimuler l 'investissement produit en relativisant l'investissement qualité
-          
-            /*if (unSurDeux)
-            {
-                investissementQualité--;
-                unSurDeux = false;
-            }
-            else if (!unSurDeux)
-            {
-               
-                unSurDeux = true;
-            }*/
-            
-
-           investissementQualité--;
-            return investissementQualité;
+            investissementQualité--;
+            unSurDeux = false;
         }
-        public uint  refacto(uint complexiteAccidentelleT , uint valeurProduiteBrute , ref bool refactoEfficace)
+        else if (!unSurDeux)
         {
-            refactoEfficace = false;
-            uint investissementQualite = 0;
-            if (valeurProduiteBrute > complexiteAccidentelleT)
-            {
-                investissementQualite = complexiteAccidentelleT;    
-            }
-            else if (valeurProduiteBrute == complexiteAccidentelleT)
-            {
-                investissementQualite = complexiteAccidentelleT;
-            }
-            else if(complexiteAccidentelleT > valeurProduiteBrute)
-            {
-                investissementQualite =  valeurProduiteBrute;
-            }
+           
+            unSurDeux = true;
+        }*/
 
-            uint differenceContinuerRefactoOuPas = complexiteAccidentelleT - investissementQualite;
 
-            if (differenceContinuerRefactoOuPas  < 4)
-            {
-                refactoEfficace = true;
-            }
-            return investissementQualite;
-        }
-        /// <inheritdoc />
-        public IStratégieQualité Fork() => new StratégieGuillaumeGouy();
+        investissementQualité--;
+        return investissementQualité;
+    }
+
+    public uint refacto(uint complexiteAccidentelleT, uint valeurProduiteBrute, ref bool refactoEfficace)
+    {
+        refactoEfficace = false;
+        uint investissementQualite = 0;
+        if (valeurProduiteBrute > complexiteAccidentelleT)
+            investissementQualite = complexiteAccidentelleT;
+        else if (valeurProduiteBrute == complexiteAccidentelleT)
+            investissementQualite = complexiteAccidentelleT;
+        else if (complexiteAccidentelleT > valeurProduiteBrute) investissementQualite = valeurProduiteBrute;
+
+        var differenceContinuerRefactoOuPas = complexiteAccidentelleT - investissementQualite;
+
+        if (differenceContinuerRefactoOuPas < 4) refactoEfficace = true;
+        return investissementQualite;
     }
 }
