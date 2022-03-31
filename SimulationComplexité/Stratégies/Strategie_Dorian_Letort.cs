@@ -2,7 +2,7 @@
 
 namespace SimulationComplexité.Stratégies
 {
-    internal class VotreStratégie : IStratégieQualité
+    internal class StratégieDorianLetort : IStratégieQualité
     {
         /// <inheritdoc />
         public uint MontantInvestiEnQualité(uint valeurProduiteBrute,

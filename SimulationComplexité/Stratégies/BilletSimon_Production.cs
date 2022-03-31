@@ -2,7 +2,7 @@
 
 namespace SimulationComplexité.Stratégies
 {
-    internal class VotreStratégie : IStratégieQualité
+    internal class StratégieSimonBillet : IStratégieQualité
     {
         public uint MontantInvestiEnQualité(uint valeurProduiteBrute, uint complexitéAccidentelleActuelle, uint scoreProduitActuel, ushort coutDUnDé)
         {
@@ -83,7 +83,7 @@ namespace SimulationComplexité.Stratégies
 
         }
 
-        public IStratégieQualité Fork() => new VotreStratégie();
+        public IStratégieQualité Fork() => new StratégieSimonBillet();
 
         private StyleStrategie setMaStrategie(double nombreDeDesEntropie)
         {
@@ -99,19 +99,19 @@ namespace SimulationComplexité.Stratégies
 
             return StyleStrategie.TousEnProduction;
         }
+
+        private enum StyleStrategie
+        {
+            /// L'objectif est de ne pas avoir de complexite
+            /// ou le moins possible
+            PasDeComplexite,
+
+            /// Essayer de toujour mettre au moins 1 en qualite
+            ///quand c'est possible
+            MinimumDeProduit,
+
+            /// Mettre tous les points quand on en a en production
+            TousEnProduction,
+        }
     }
-}
-
-enum StyleStrategie
-{
-    /// L'objectif est de ne pas avoir de complexite
-    /// ou le moins possible
-    PasDeComplexite,
-
-    /// Essayer de toujour mettre au moins 1 en qualite
-    ///quand c'est possible
-    MinimumDeProduit,
-    
-    /// Mettre tous les points quand on en a en production
-    TousEnProduction,
 }
