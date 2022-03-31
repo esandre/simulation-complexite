@@ -23,7 +23,7 @@ namespace SimulationComplexité.Notation
         }
 
         public const ushort ToléranceValeurMoyenneParItération = 5;
-        public const ushort ToléranceValeurBrute = 5;
+        public const ushort ToléranceValeurBrute = 1;
         public const ushort ToléranceValeurMédiane = 5;
 
         public IStratégieQualité Stratégie { get; }
