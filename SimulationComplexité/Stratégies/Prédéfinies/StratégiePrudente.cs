@@ -1,19 +1,18 @@
 ﻿using SimulationComplexité.Notation;
 using SimulationComplexité.Simulation.Stratégie;
 
-namespace SimulationComplexité.Stratégies.Prédéfinies
-{
-    internal class StratégiePrudente : StratégieStateless, IStratégieÉtalon
-    {
-        /// <inheritdoc />
-        public override uint MontantInvestiEnQualité(
-            uint valeurProduiteBrute,
-            uint complexitéAccidentelleActuelle,
-            uint scoreProduitActuel,
-            ushort coutDUnDé)
-            => valeurProduiteBrute / 2;
+namespace SimulationComplexité.Stratégies.Prédéfinies;
 
-        /// <inheritdoc />
-        public ushort Note => 8;
-    }
+internal class StratégiePrudente : StratégieStateless, IStratégieÉtalon
+{
+    /// <inheritdoc />
+    public override uint MontantInvestiEnQualité(
+        uint valeurProduiteBrute,
+        uint complexitéAccidentelleActuelle,
+        uint scoreProduitActuel,
+        ushort coutDUnDé)
+        => valeurProduiteBrute / 2;
+
+    /// <inheritdoc />
+    public ushort Note => 8;
 }

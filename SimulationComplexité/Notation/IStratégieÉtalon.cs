@@ -1,9 +1,8 @@
 ﻿using SimulationComplexité.Simulation.Stratégie;
 
-namespace SimulationComplexité.Notation
+namespace SimulationComplexité.Notation;
+
+internal interface IStratégieÉtalon : IStratégieQualité
 {
-    internal interface IStratégieÉtalon : IStratégieQualité
-    {
-        public ushort Note { get; }
-    }
+    public ushort Note { get; }
 }
