@@ -32,17 +32,7 @@ internal static class PrintStatistiquesExtension
     {
         foreach (var statistiquesStratégie in statistiques.OrderBy(e => e, ComparaisonParValeurBrute))
         {
-            {
-                if (statistiquesStratégie.Stratégie is IStratégieÉtalon étalon)
-                    Console.WriteLine($"-----{étalon.Note}/20-----");
-            }
-
             statistiquesStratégie.Print();
-
-            {
-                if (statistiquesStratégie.Stratégie is IStratégieÉtalon étalon)
-                    Console.WriteLine($"-----{étalon.Note+1}/20-----");
-            }
         }
     }
 }

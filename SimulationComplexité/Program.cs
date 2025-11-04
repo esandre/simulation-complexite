@@ -14,9 +14,13 @@ const bool verbose = false;
 var stratégiesQualité = new IStratégieQualité[]
 {
     new StratégieDavidGoodenough(),
-    new StratégieQuiVaChaptiVaLoin(),
-    new StratégiePrudente(),
-    new VotreStratégie()
+    new StratégieIntransigeante(),
+    new StratégieARatio(75),
+    new StratégieARatio(66),
+    new StratégieSeuilFixe(new StratégieARatio(30),new StratégieARatio(60), 10),
+    new StratégieARatio(50),
+    new StratégieARatio(25),
+    new Triche()
 };
 
 // ReSharper disable once ConditionIsAlwaysTrueOrFalse

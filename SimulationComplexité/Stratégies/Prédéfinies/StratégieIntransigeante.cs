@@ -1,9 +1,8 @@
-﻿using SimulationComplexité.Notation;
-using SimulationComplexité.Simulation.Stratégie;
+﻿using SimulationComplexité.Simulation.Stratégie;
 
 namespace SimulationComplexité.Stratégies.Prédéfinies;
 
-internal class StratégieQuiVaChaptiVaLoin : StratégieStateless, IStratégieÉtalon
+internal class StratégieIntransigeante : StratégieStateless
 {
     /// <inheritdoc />
     public override uint MontantInvestiEnQualité(
@@ -18,6 +17,8 @@ internal class StratégieQuiVaChaptiVaLoin : StratégieStateless, IStratégieÉt
         return complexitéAccidentelleActuelle + valeurInvestissableEnProduit / 2;
     }
 
-    /// <inheritdoc />
-    public ushort Note => 10;
+    public override string ToString()
+    {
+        return "Intransigeante";
+    }
 }

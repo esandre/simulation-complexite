@@ -1,9 +1,8 @@
-﻿using SimulationComplexité.Notation;
-using SimulationComplexité.Simulation.Stratégie;
+﻿using SimulationComplexité.Simulation.Stratégie;
 
 namespace SimulationComplexité.Stratégies.Prédéfinies;
 
-internal class StratégieDavidGoodenough : StratégieStateless, IStratégieÉtalon
+internal class StratégieDavidGoodenough : StratégieStateless
 {
     /// <inheritdoc />
     public override uint MontantInvestiEnQualité(
@@ -13,6 +12,8 @@ internal class StratégieDavidGoodenough : StratégieStateless, IStratégieÉtal
         ushort coûtDUnDé)
         => 0;
 
-    /// <inheritdoc />
-    public ushort Note => 0;
+    public override string ToString()
+    {
+        return "David Goodenough";
+    }
 }

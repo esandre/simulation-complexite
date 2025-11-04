@@ -3,9 +3,9 @@ using SimulationComplexité.Stratégies.Prédéfinies;
 
 namespace SimulationComplexité.Stratégies;
 
-internal class VotreStratégie : IStratégieQualité
+internal class Triche : IStratégieQualité
 {
-    private static readonly StratégieQuiVaChaptiVaLoin StratégiePrudente = new ();
+    private static readonly StratégieIntransigeante StratégiePrudente = new ();
 
     /// <inheritdoc />
     public uint MontantInvestiEnQualité(uint valeurProduiteBrute, uint complexitéAccidentelleActuelle, uint scoreProduitActuel, ushort coutDUnDé)
@@ -41,5 +41,5 @@ internal class VotreStratégie : IStratégieQualité
     }
 
     /// <inheritdoc />
-    public IStratégieQualité Fork() => new VotreStratégie();
+    public IStratégieQualité Fork() => new Triche();
 }
